@@ -3,51 +3,81 @@
 <head>
     <style>
         fieldset {
-          background-color: #eeeeee;
+            background-color: #eeeeee;
         }
-
         legend {
-          background-color: gray;
-          color: white;
-          padding: 5px 10px;
+            background-color: gray;
+            color: white;
+            padding: 5px 10px;
         }
-
         input {
             margin-top: 5px;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 5px;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
         }
     </style>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <form action="{% url 'inventory_tracking:create_update_delete' %}" method="post">
+
+    <form action="{% url 'inventory_tracking:create_update' %}" method="post">
         {% csrf_token %}
         <fieldset>
-            <legend><h1> Create/Update Item </h1></legend><br>
-            SKU<br><input type="text" id="sku_number" name="sku_number" value={{ latest_sku_number }}><br><br>
-            Item Name<br><input type="text" id="item_name" name="item_name" value={{ latest_item_name }}><br><br>
-            Item Quantity<br><input type="text" id="item_quantity" name="item_quantity" value={{ latest_item_quantity }}><br><br>
+            <legend><h1> Create/Update Item </h1></legend>
+            <br>SKU<br>
+            <input type="text" id="sku_number" name="sku_number" value={{ last_item.sku_number }}><br>
+            <br>Item Name<br>
+            <input type="text" id="item_name" name="item_name" value={{ last_item.item_name }}><br>
+            <br>Item Quantity<br>
+            <input type="text" id="item_quantity" name="item_quantity" value={{ last_item.item_quantity }}><br><br>
+            <input type="submit" name="action" value="Delete Item">
+            <input type="submit" name="action" value="Update Item">
+            <input type="submit" name="action" value="Add Item">
         </fieldset>
-        <input type="submit" name="action" value="Delete Item">
-        <input type="submit" name="action" value="Update Item">
-        <input type="submit" name="action" value="Add Item">
+
     </form>
 
-
     {% if list_of_items %}
-        <ul>
+    <table>
+        <tr>
+            <th> SKU Number </th>
+            <th> Item Name </th>
+            <th> Quantity </th>
+        </tr>
         {% for item in list_of_items %}
-            <li>
-                <a href="{% url 'inventory_tracking:item' item.sku_number %}">
-                    {{ item.item_name }}
-                </a>
-            </li>
+        <tr>
+            <td>{{ item.sku_number }}</td>
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.item_quantity }}</td>
+            <td style="background-color: #FFFFFF; border: none; width: 10%;">
+                <form action="{% url 'inventory_tracking:update' item.sku_number %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="action" value="Select">
+                </form>
+                <form action="{% url 'inventory_tracking:delete' item.sku_number %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="action" value="Delete Item">
+                </form>
+            </td>
+        </tr>
         {% endfor %}
-        </ul>
+    </table>
     {% else %}
         <p>No items are available.</p>
     {% endif %}
-
 
 </body>
 </html>
