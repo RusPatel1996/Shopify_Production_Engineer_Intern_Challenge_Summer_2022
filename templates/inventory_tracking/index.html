@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        fieldset {
+          background-color: #eeeeee;
+        }
+
+        legend {
+          background-color: gray;
+          color: white;
+          padding: 5px 10px;
+        }
+
+        input {
+          margin: 5px;
+        }
+    </style>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+    <form action="{% url 'inventory_tracking:create_or_update' %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h1> Create/Update Item </h1></legend>
+            <input type="text" id="sku_number" name="sku_number" value={{ latest_sku_number }}><br><br>
+            <input type="text" id="item_name" name="item_name" value={{ latest_item_name }}><br><br>
+            <input type="text" id="item_quantity" name="item_quantity" value={{ latest_item_quantity }}><br><br>
+        </fieldset>
+        <input type="submit" name="action" value="Update Item">
+        <input type="submit" name="action" value="Add Item">
+    </form>
+
     {% if list_of_items %}
         <ul>
         {% for item in list_of_items %}
