@@ -6,6 +6,5 @@ app_name = 'inventory_tracking'
 urlpatterns = [
     path('', views.index, name='index'),
     path('<int:sku_number>/', views.item, name='item'),
-    path('create_or_update', views.create_or_update, name='create_or_update'),
-
+    path('create_update_delete', views.create_update_delete, name='create_update_delete'),
 ]

@@ -23,14 +23,20 @@ def index(request):
         })
 
 
-def create_or_update(request):
+def create_update_delete(request):
     sku_number = request.POST['sku_number']
     item_name = request.POST['item_name']
     item_quantity = request.POST['item_quantity']
-    if request.POST.get("action") == "Add Item":
-        Inventory.create_item(sku_number, item_name, item_quantity)
+    if sku_number and item_name and item_quantity:
+        if request.POST.get("action") == "Add Item":
+            Inventory.create_item(sku_number, item_name, item_quantity)
+        if request.POST.get("action") == "Update Item":
+            Inventory.update_item(sku_number, item_name, item_quantity)
+    if sku_number:
+        if request.POST.get("action") == "Delete Item":
+            Inventory.delete_item(sku_number)
     else:
-        Inventory.update_item(sku_number, item_name, item_quantity)
+        raise Http404("One of the fields is empty.")
     return HttpResponseRedirect(reverse('inventory_tracking:index'))
 
 
