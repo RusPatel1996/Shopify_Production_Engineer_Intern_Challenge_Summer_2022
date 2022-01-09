@@ -1,4 +1,3 @@
-from sqlite3 import IntegrityError
 from django.db import models
 
 
@@ -14,13 +13,7 @@ class Inventory(models.Model):
 
     @classmethod
     def create_item(cls, sku, name, quantity, image=None):
-        created = False
-        try:
-            cls.objects.create(sku_number=sku, item_name=name, item_quantity=quantity, image=image)
-            created = True
-        except IntegrityError as e:
-            print(e)
-        return created
+        cls.objects.create(sku_number=sku, item_name=name, item_quantity=quantity, image=image)
 
     @classmethod
     def get_item(cls, sku):
