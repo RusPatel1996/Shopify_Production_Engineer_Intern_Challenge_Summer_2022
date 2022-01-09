@@ -1,11 +1,11 @@
-import sys
-
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 
 from .models import Inventory
 
+MAX_INT = 2**31-1
+MIN_INT = -2**31
 
 def index(request):
     last_item = Inventory.latest_item()
@@ -57,6 +57,6 @@ def delete(request, sku_number):
 
 
 def within_bounds(number):
-    if sys.maxsize < int(number) < -sys.maxsize-1:
+    if MAX_INT < int(number) < MIN_INT:
         return False
     return True
