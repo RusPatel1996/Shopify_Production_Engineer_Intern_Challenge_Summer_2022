@@ -7,13 +7,16 @@ class Inventory(models.Model):
     item_name = models.CharField(max_length=100)
     item_quantity = models.IntegerField(default=1)
     last_updated = models.DateTimeField(auto_now_add=True, blank=True)
-    # item_location = models.CharField(blank=True, max_length=100)
+    image = models.ImageField(upload_to='images/', blank=True)
+
+    def __str__(self):
+        return self.item_name
 
     @classmethod
-    def create_item(cls, sku, name, quantity=1):
+    def create_item(cls, sku, name, quantity, image=None):
         created = False
         try:
-            cls.objects.create(sku_number=sku, item_name=name, item_quantity=quantity)
+            cls.objects.create(sku_number=sku, item_name=name, item_quantity=quantity, image=image)
             created = True
         except IntegrityError as e:
             print(e)
@@ -35,11 +38,12 @@ class Inventory(models.Model):
         return cls.objects.all()
 
     @classmethod
-    def update_item(cls, sku, name, quantity):
+    def update_item(cls, sku, name, quantity, image=None):
         item = Inventory.get_item(sku)
         if item:
             item.item_name = name
             item.item_quantity = quantity
+            item.image = image
             item.save()
             return True
         return False
