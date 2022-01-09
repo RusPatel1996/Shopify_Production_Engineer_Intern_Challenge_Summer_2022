@@ -1,3 +1,5 @@
+import sys
+
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
@@ -18,9 +20,16 @@ def create_update(request):
     sku_number = request.POST['sku_number']
     item_name = request.POST['item_name']
     item_quantity = request.POST['item_quantity']
-    if not item_quantity:
-        item_quantity = 1
+    if not item_quantity or item_quantity < '0':
+        item_quantity = '0'
+    if sku_number < '0':
+        raise Http404("SKU Number cannot be below 0")
+    if not within_bounds(sku_number):
+        raise Http404("SKU number is out of bounds.")
+    if not within_bounds(item_quantity):
+        raise Http404("Item quantity is out of bounds.")
     image = request.FILES['image'] if 'image' in request.FILES else None
+
     if sku_number and item_name:
         if request.POST.get("action") == "Add Item":
             Inventory.create_item(sku_number, item_name, item_quantity, image)
@@ -45,3 +54,9 @@ def update(request, sku_number):
 def delete(request, sku_number):
     Inventory.delete_item(sku_number)
     return HttpResponseRedirect(reverse('inventory_tracking:index'))
+
+
+def within_bounds(number):
+    if sys.maxsize < int(number) < -sys.maxsize-1:
+        return False
+    return True

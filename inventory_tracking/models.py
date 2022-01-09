@@ -2,9 +2,9 @@ from django.db import models, IntegrityError
 
 
 class Inventory(models.Model):
-    sku_number = models.IntegerField(primary_key=True)
+    sku_number = models.BigIntegerField(primary_key=True)
     item_name = models.CharField(max_length=100)
-    item_quantity = models.IntegerField(default=1)
+    item_quantity = models.BigIntegerField(default=1)
     last_updated = models.DateTimeField(auto_now_add=True, blank=True)
     image = models.ImageField(upload_to='images/', blank=True)
 
