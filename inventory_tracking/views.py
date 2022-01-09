@@ -7,7 +7,9 @@ from .models import Inventory
 MAX_INT = 2**31-1
 MIN_INT = -2**31
 
+
 def index(request):
+    print(MAX_INT)
     last_item = Inventory.latest_item()
     list_of_items = Inventory.objects.order_by('item_name')
     return render(request, 'inventory_tracking/index.html', {
@@ -57,6 +59,6 @@ def delete(request, sku_number):
 
 
 def within_bounds(number):
-    if MAX_INT < int(number) < MIN_INT:
-        return False
-    return True
+    if MIN_INT <= int(number) <= MAX_INT:
+        return True
+    return False
