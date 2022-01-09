@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
 
-from Shopify_Production_Engineer_Intern_Challenge_Summer_2022.settings import MEDIA_URL, MEDIA_ROOT
 from .models import Inventory
 
 
