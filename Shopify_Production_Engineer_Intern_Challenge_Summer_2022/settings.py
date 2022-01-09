@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CSRF_TRUSTED_ORIGINS = ['shopify-prod-eng-intern.herokuapp.com']
 
 # Application definition
 
