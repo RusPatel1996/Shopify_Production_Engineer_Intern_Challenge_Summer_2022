@@ -28,6 +28,7 @@ idna==3.2
 iniconfig==1.1.1
 itypes==1.2.0
 Jinja2==3.0.1
+jsonfield==3.1.0
 jsonfield2==4.0.0.post0
 MarkupSafe==2.0.1
 mccabe==0.6.1
