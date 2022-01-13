@@ -9,7 +9,6 @@ MIN_INT = -2**31
 
 
 def index(request):
-    print(MAX_INT)
     last_item = Inventory.latest_item()
     list_of_items = Inventory.objects.order_by('item_name')
     return render(request, 'inventory_tracking/index.html', {
